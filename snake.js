@@ -4,7 +4,10 @@ let rows = 40
 let columns = 50
 let canvas;
 let ctx;
+
 let score = 0
+
+
 
 //snake
 let snakeX = blockSize * 10
@@ -30,7 +33,7 @@ window.onload = function() {
     ctx = canvas.getContext("2d")
 
     placeFood()
-    document.addEventListener("keyup", changeDirection)
+    document.addEventListener("keydown", changeDirection)
     setInterval(update, 1000/10)
 }
 
@@ -38,17 +41,19 @@ function update() {
     if (gameOver) {
         return;
     }
-
-
     ctx.fillStyle = "black"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     ctx.fillStyle = "red"
     ctx.fillRect(foodX, foodY, blockSize, blockSize)
 
+    ctx.font = '20px Impact';
+    ctx.fillStyle = '#fff';
+    ctx.fillText("Your score : " + score, (canvas.width/2), canvas.height - 10)
+
     if (snakeX === foodX && snakeY === foodY) {
         snakeBody.push([foodX, foodY])
-        let score = 10
+        score += 10
         placeFood();
     } 
 
@@ -86,25 +91,25 @@ function update() {
 }
 
 function changeDirection(e) {
-    if ((e.code == "ArrowUp" || e.code == "KeyW") && velocity.y != 1 ) {
+    if ((e.code === "ArrowUp" || e.code === "KeyW") && velocity.y !== 1 ) {
         velocity.x = 0;
         velocity.y = -1;
     }
-    else if ((e.code == "ArrowDown" || e.code == "KeyS") && velocity.y != -1) {
+    else if ((e.code === "ArrowDown" || e.code === "KeyS") && velocity.y !== -1) {
         velocity.x = 0;
         velocity.y = 1;
     }
-    else if ((e.code == "ArrowLeft" || e.code == "KeyA") && velocity.x != 1) {
+    else if ((e.code === "ArrowLeft" || e.code === "KeyA") && velocity.x !== 1) {
         velocity.x = -1;
         velocity.y = 0;
     }
-    else if ((e.code == "ArrowRight" || e.code == "KeyD") && velocity.x != -1) {
+    else if ((e.code === "ArrowRight" || e.code === "KeyD") && velocity.x !== -1) {
         velocity.x = 1;
         velocity.y = 0;
     }
 }
 
 function placeFood() {
-    foodX = Math.round(Math.random() * columns) * blockSize
-    foodY = Math.round(Math.random() * rows) * blockSize
+    foodX = Math.floor(Math.random() * columns) * blockSize
+    foodY = Math.floor(Math.random() * rows) * blockSize
 }
